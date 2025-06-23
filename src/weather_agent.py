@@ -66,7 +66,7 @@ class Weather_Agent:
             print(text)
             voice_obj.make_voice(text)
         else:
-            text = "\n❌ Couldn't find the city. Please check the name and try again."
+            text = "\n❌ Couldn't find the city. Please enter correct name and try again."
             print(text)
             voice_obj.make_voice("\n❌ Couldn't find the city. Please check the name and try again.")
 
@@ -79,6 +79,7 @@ def main():
     voice_obj.set_voice(True)
     voice_obj.make_voice(my_text="Enter the city")
     city = input("Enter a city name: ")
+
     weather_obj.get_weather(city, voice_obj)
 
 
