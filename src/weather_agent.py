@@ -2,7 +2,6 @@ import requests # for using API and by api GET to read a weather per city from t
 from pathlib import Path
 import os
 import yaml
-from voice import Voice
 
 class Weather_Agent:
     def __init__(self):
@@ -69,19 +68,3 @@ class Weather_Agent:
             text = "\n❌ Couldn't find the city. Please enter correct name and try again."
             print(text)
             voice_obj.make_voice("\n❌ Couldn't find the city. Please check the name and try again.")
-
-
-
-def main():
-    voice_obj = Voice()
-    weather_obj = Weather_Agent()
-
-    voice_obj.set_voice(True)
-    voice_obj.make_voice(my_text="Enter the city")
-    city = input("Enter a city name: ")
-
-    weather_obj.get_weather(city, voice_obj)
-
-
-if __name__ == "__main__":
-    main()
