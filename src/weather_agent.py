@@ -2,6 +2,9 @@ import requests # for using API and by api GET to read a weather per city from t
 from pathlib import Path
 import os
 import yaml
+from src.voice import Voice # to convert text to speach
+
+
 
 class Weather_Agent:
     def __init__(self):
@@ -43,7 +46,8 @@ class Weather_Agent:
                 return full_file_path
         return None  # Return None if not found
 
-    def get_weather(self,desired_city, voice_obj):
+    def get_weather(self,desired_city):
+        voice_obj = Voice()
         params = self._get_weather_params_by_city(city_name=desired_city)
         # here I use simply the REST API: GET to request a data from a site, using api this site supplies
         response = requests.get(self.base_url,
@@ -53,18 +57,18 @@ class Weather_Agent:
             temperature = data["main"]["temp"]
             description = data["weather"][0]["description"]
 
-            text = f"\n🌤️ Weather in {desired_city}:"  # this Sun behind clouds is emojy: \U0001F324
+            text = f"\nWeather in {desired_city}:"  # this Sun behind clouds is emojy: \U0001F324
             print(text)
-            voice_obj.make_voice(text)
+            voice_obj.produce_voice(my_text=text)
 
             text = f"   Temperature: {temperature}°C"
             print(text)
-            voice_obj.make_voice(text)
+            voice_obj.produce_voice(my_text=text)
 
             text = f"   Description: {description}"
             print(text)
-            voice_obj.make_voice(text)
+            voice_obj.produce_voice(my_text=text)
         else:
             text = "\n❌ Couldn't find the city. Please enter correct name and try again."
             print(text)
-            voice_obj.make_voice("\n❌ Couldn't find the city. Please check the name and try again.")
+            voice_obj.produce_voice(my_text="\n❌ Couldn't find the city. Please check the name and try again.")
