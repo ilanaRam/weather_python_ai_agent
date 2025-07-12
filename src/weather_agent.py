@@ -8,8 +8,8 @@ from src.voice import Voice # to convert text to speach
 
 class Weather_Agent:
     def __init__(self):
-        self.base_url = None
-        self.api_key = None
+        self.open_weather_url = None
+        self.open_weather_api_key = None
         self.init()
 
     def init(self):
@@ -19,8 +19,8 @@ class Weather_Agent:
         print(f"\nLoading configs file from: {configs_file}")
         with open(configs_file, "r") as configs_yaml_file:
             content = yaml.safe_load(configs_yaml_file)
-            self.base_url = content["BASE_URL"]
-            print(f"Base URL is: {self.base_url}")
+            self.open_weather_url = content["OPEN_WEATHER_URL"]
+            print(f"Base URL is: {self.open_weather_url}")
 
         key_file = self._find_full_file_path(Path.cwd().parent, "key.yaml")
         if not key_file:
@@ -28,13 +28,13 @@ class Weather_Agent:
         print(f"\nLoading key file from: {key_file}\n")
         with open(key_file, "r") as key_yaml_file:
             content = yaml.safe_load(key_yaml_file)
-            self.api_key = content["API_KEY"]
-            print(f"API_Key is: {self.api_key}")
+            self.open_weather_api_key = content["OPEN_WEATHER_API_KEY"]
+            print(f"API_Key is: {self.open_weather_api_key}")
 
     def _get_weather_params_by_city(self, city_name):
         params = {
             "q": city_name,
-            "appid": self.api_key,
+            "appid": self.open_weather_api_key,
             "units": "metric"
         }
         return params
@@ -50,7 +50,7 @@ class Weather_Agent:
         voice_obj = Voice()
         params = self._get_weather_params_by_city(city_name=desired_city)
         # here I use simply the REST API: GET to request a data from a site, using api this site supplies
-        response = requests.get(self.base_url,
+        response = requests.get(self.open_weather_url,
                                 params=params)
         if response.status_code == 200:
             data = response.json()

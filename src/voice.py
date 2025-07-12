@@ -1,7 +1,5 @@
 import pyttsx3  # for voice answering (output)
 import speech_recognition as sr
-import pyaudio
-print("PyAudio imported successfully!")
 
 
 class Voice:
