@@ -10,7 +10,7 @@ class ChatGPT_llm:
         load_dotenv()
         self.openai.api_key = os.getenv("OPENAI_API_KEY")
 
-    def get_weather_intent(self, user_input: str) -> dict:
+    def get_user_intent_about_weather(self, user_plain_input_text: str) -> dict:
         """
         This method sends a messages to GPT and asks: “Please turn user's question into a structured JSON.”
         Then we will send this structured json to the open weather site
@@ -47,7 +47,7 @@ class ChatGPT_llm:
                                                            "content": prompt},
                                                            # user's question (in plain text, this is actually what we ask) - that i ask to structure according to given format
                                                           {"role":   "user",
-                                                           "content": user_input}
+                                                           "content": user_plain_input_text}
                                                          ]
                                                )
 
