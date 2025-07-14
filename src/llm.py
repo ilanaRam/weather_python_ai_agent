@@ -1,5 +1,6 @@
 
 import openai                    # to use chatGPT llm (it is a product of the openai company)
+from openai import OpenAI
 import os
 from dotenv import load_dotenv   # to read environment params
 import json
@@ -8,7 +9,9 @@ import json
 class ChatGPT_llm:
     def __init__(self):
         load_dotenv()
-        self.openai.api_key = os.getenv("OPENAI_API_KEY")
+        self.open_ai_key = os.getenv("OPENAI_API_KEY")
+        # !!! this operation sets globaly the OPEN AI KEY, so every further operation can use so we will not set it each time we use method from openai package !!!
+        self.client  = OpenAI() # os.getenv("OPENAI_API_KEY")
 
     def get_user_intent_about_weather(self, user_plain_input_text: str) -> dict:
         """
@@ -39,17 +42,17 @@ class ChatGPT_llm:
         # system message - defines chatGPT role - what to do with user's question (defined by 'prompt')
         # user message - defines user's request (what user actually asks chatGPT to do)
 
-        # by using method .create(...) we call openAI
-        response = openai.ChatCompletion.create(model="gpt-3.5-turbo",
-                                                temperature=0, # 0 means: "Be very exact. Do not be creative. Just give me exactly what I asked." Dont be friendly and tell me stories
-                                                           # format - in which i wish to get the users's request (user_input)
-                                                messages=[{"role":   "system",
-                                                           "content": prompt},
-                                                           # user's question (in plain text, this is actually what we ask) - that i ask to structure according to given format
-                                                          {"role":   "user",
-                                                           "content": user_plain_input_text}
-                                                         ]
-                                               )
+        # by using method .create(...) we call openAI and this call uses OPEN_AI_KEY that we set globaly in def __init__()
+        response = self.client.chat.completions.create(model="gpt-3.5-turbo",
+                                                        temperature=0, # 0 means: "Be very exact. Do not be creative. Just give me exactly what I asked." Dont be friendly and tell me stories
+                                                                   # format - in which i wish to get the users's request (user_input)
+                                                        messages=[{"role":   "system",
+                                                                   "content": prompt},
+                                                                   # user's question (in plain text, this is actually what we ask) - that i ask to structure according to given format
+                                                                  {"role":   "user",
+                                                                   "content": user_plain_input_text}
+                                                                 ]
+                                                       )
 
         content = response.choices[0].message.content.strip()
         try:

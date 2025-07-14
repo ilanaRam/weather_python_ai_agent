@@ -21,24 +21,24 @@ class Voice:
             engine.say(my_text)
             engine.runAndWait()
 
-def get_voice():
-    recognizer = sr.Recognizer()
+    def get_voice(self):
+        recognizer = sr.Recognizer()
 
-    with sr.Microphone() as source:
-        print("🎤 Listening... Please say something.")
-        recognizer.adjust_for_ambient_noise(source)  # Optional: helps with noisy background
-        audio = recognizer.listen(source)
+        with sr.Microphone() as source:
+            print("🎤 Listening... Please say something.")
+            recognizer.adjust_for_ambient_noise(source)  # Optional: helps with noisy background
+            audio = recognizer.listen(source)
 
-    try:
-        text = recognizer.recognize_google(audio)
-        print(f"🗣️ You said: {text}")
-        return text
-    except sr.UnknownValueError:
-        print("❌ Sorry, I could not understand the audio.")
+        try:
+            text = recognizer.recognize_google(audio)
+            print(f"🗣️ You said: {text}")
+            return text
+        except sr.UnknownValueError:
+            print("❌ Sorry, I could not understand the audio.")
+            return None
+        except sr.RequestError as e:
+            print(f"🔌 Could not request results from Google Speech Recognition service; {e}")
         return None
-    except sr.RequestError as e:
-        print(f"🔌 Could not request results from Google Speech Recognition service; {e}")
-        return None
 
-if __name__ == '__main__':
-    get_voice()
+# if __name__ == '__main__':
+#     get_voice()

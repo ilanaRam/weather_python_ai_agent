@@ -8,28 +8,33 @@ def weather_agent():
     gpt_obj = ChatGPT_llm()
 
     # get user's plain text request about the weather
-    voice_obj.produce_voice(my_text="Enter your question about the weather: ")
-    user_plain_input_text = input("Enter your question about the weather: ")
+    voice_obj.produce_voice(my_text="Enter your question about the weather ")
+    user_plain_input_text = voice_obj.get_voice()
 
     # get user's formated text request about the weather
-    formated_user_weather_intent = gpt_obj.get_user_intent_about_weather(user_plain_input_text)
-    if not formated_user_weather_intent:
+    user_formated_weather_intent = gpt_obj.get_user_intent_about_weather(user_plain_input_text)
+    if not user_formated_weather_intent:
         print("❌ Sorry, I didn’t understand your request.")
         return
 
     # extract city & intent, from the user's formated request text
-    city = formated_user_weather_intent.get("city")
-    weather_intent = formated_user_weather_intent.get("intent")
+    city = user_formated_weather_intent.get("city")
+    weather_intent = user_formated_weather_intent.get("intent")
 
-    if not city or not weather_intent:
-        print("❌ Sorry, I didn’t understand city / intent")
+    if not city:
+        voice_obj.produce_voice(my_text="❌ Sorry, I didn’t understand the city")
+        return
+    if not weather_intent:
+        voice_obj.produce_voice(my_text="❌ Sorry, I didn’t understand the intent")
         return
     # apply weather obj to get weather for city
     if weather_intent == "current_weather":
-        print(weather_obj.get_current_weather(city))
+        current_weather_res = weather_obj.get_current_weather(city)
+        voice_obj.produce_voice(my_text=f"The current weather for city {city}. is: {current_weather_res}")
     # apply weather obj to get forcast for city
     elif weather_intent == "forcast":
-        print(weather_obj.get_forcast(city))
+        forcast = weather_obj.get_forcast(city)
+        voice_obj.produce_voice(my_text=f"The forcast for city {city} is: {forcast}")
     else:
         print("❌ Sorry, I couldn't determine what you want.")
 

@@ -3,7 +3,7 @@ from pathlib import Path
 import os
 import yaml
 from src.voice import Voice # to convert text to speach
-
+from dotenv import load_dotenv   # to read environment params
 
 
 class Weather_Agent:
@@ -14,6 +14,9 @@ class Weather_Agent:
         self.init()
 
     def init(self):
+        load_dotenv()
+        self.open_ai_key = os.getenv("OPEN_WEATHER_API_KEY")
+
         configs_file = self._find_full_file_path(Path.cwd().parent, "configs.yaml")
         if not configs_file:
             raise FileExistsError
@@ -25,16 +28,16 @@ class Weather_Agent:
             print(f"Weather URL is: {self.open_weather_url}")
 
             self.open_weather_forcast_url = content["OPEN_WEATHER_FORCAST_URL"]
-            print(f"Forcasr URL is: {self.open_weather_forcast_url}")
+            print(f"Forcast URL is: {self.open_weather_forcast_url}")
 
         key_file = self._find_full_file_path(Path.cwd().parent, "key.yaml")
         if not key_file:
             raise FileExistsError
-        print(f"\nLoading key file from: {key_file}\n")
+        print(f"\nLoading keys file from: {key_file}\n")
         with open(key_file, "r") as key_yaml_file:
             content = yaml.safe_load(key_yaml_file)
             self.open_weather_api_key = content["OPEN_WEATHER_API_KEY"]
-            print(f"API_Key is: {self.open_weather_api_key}")
+            print(f"OPEN_WEATHER_API_KEY is: {self.open_weather_api_key}")
 
     def _get_weather_params_by_city(self, city_name):
         params = {
@@ -64,6 +67,7 @@ class Weather_Agent:
             description = data["weather"][0]["description"]
 
             reply = f"\nCurrent weather in {desired_city} is TEMPERATURE: {temperature}, DESCRIPTION: {description}"  # this Sun behind clouds is emojy: \U0001F324
+            print(f"Current weather for city {desired_city} is: {reply}")
             return reply
         else:
             reply = "\n❌ Couldn't find the city. Please enter correct name and try again."
@@ -83,6 +87,7 @@ class Weather_Agent:
                 temp = entry["main"]["temp"]
                 desc = entry["weather"][0]["description"]
                 reply += f"{time}: {temp}°C, {desc}\n"
+            print(f"Forcast for city: {desired_city} is: {reply}")
             return reply
         else:
             return f"❌ Could not find forecast for {desired_city}."
