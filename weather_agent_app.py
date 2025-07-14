@@ -22,10 +22,10 @@ def weather_agent():
     weather_intent = user_formated_weather_intent.get("intent")
 
     if not city:
-        voice_obj.produce_voice(my_text="❌ Sorry, I didn’t understand the city")
+        voice_obj.produce_voice(my_text="❌ Sorry, I didn’t understand the city, I quit")
         return
     if not weather_intent:
-        voice_obj.produce_voice(my_text="❌ Sorry, I didn’t understand the intent")
+        voice_obj.produce_voice(my_text="❌ Sorry, I didn’t understand the intent, I quit")
         return
     # apply weather obj to get weather for city
     if weather_intent == "current_weather":
