@@ -14,7 +14,7 @@ def weather_agent():
     # get user's formated text request about the weather
     user_formated_weather_intent = gpt_obj.get_user_intent_about_weather(user_plain_input_text)
     if not user_formated_weather_intent:
-        print("❌ Sorry, I didn’t understand your request.")
+        print("❌ Sorry, I didn’t understand your request, I finish.")
         return
 
     # extract city & intent, from the user's formated request text
