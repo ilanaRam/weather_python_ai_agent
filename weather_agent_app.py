@@ -27,6 +27,8 @@ def weather_agent():
     if not weather_intent:
         voice_obj.produce_voice(my_text="❌ Sorry, I didn’t understand the intent, I quit")
         return
+
+    print(f"Both city ({city}) and weather_intent ({weather_intent} were received from user")
     # apply weather obj to get weather for city
     if weather_intent == "current_weather":
         current_weather_res = weather_obj.get_current_weather(city)
@@ -36,7 +38,7 @@ def weather_agent():
         forcast = weather_obj.get_forcast(city)
         voice_obj.produce_voice(my_text=f"The forcast for city {city} is: {forcast}")
     else:
-        print("❌ Sorry, I couldn't determine what you want.")
+        print("❌ Sorry, I couldn't understand your weather intent")
 
 
 

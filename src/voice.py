@@ -4,19 +4,19 @@ import speech_recognition as sr
 
 class Voice:
     def __init__(self):
-        self.if_to_speak = True
+        self.use_voice = True
 
     def set_output_voice(self,
-                         if_to_speak):
-        if if_to_speak:
-            self.if_to_speak = True
+                         use_voice):
+        if use_voice:
+            self.use_voice = True
         else:
-            self.if_to_speak = False
+            self.use_voice = False
 
 
     def produce_voice(self,
                       my_text: str):
-        if self.if_to_speak:
+        if self.use_voice:
             engine = pyttsx3.init()
             engine.say(my_text)
             engine.runAndWait()

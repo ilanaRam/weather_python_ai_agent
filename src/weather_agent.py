@@ -14,30 +14,34 @@ class Weather_Agent:
         self.init()
 
     def init(self):
+        # loading environment variables - these variable (key, ...) are located in .env file in project root dir - we do not load them to GIT !!
         load_dotenv()
-        self.open_ai_key = os.getenv("OPEN_WEATHER_API_KEY")
+        self.open_weather_api_key = os.getenv("OPEN_WEATHER_API_KEY")
 
+        # load URLs for open_weather site + open_ai site (to use ChatGPT capabilities of text recognition)
         configs_file = self._find_full_file_path(Path.cwd().parent, "configs.yaml")
         if not configs_file:
             raise FileExistsError
-        print(f"\nLoading configs file from: {configs_file}")
+        print(f"\nLoading different configs file from: {configs_file}, such as: URLs per site ...")
         with open(configs_file, "r") as configs_yaml_file:
             content = yaml.safe_load(configs_yaml_file)
 
             self.open_weather_url = content["OPEN_WEATHER_URL"]
-            print(f"Weather URL is: {self.open_weather_url}")
+            print(f"Loaded Open Weather URL: {self.open_weather_url}")
 
             self.open_weather_forcast_url = content["OPEN_WEATHER_FORCAST_URL"]
-            print(f"Forcast URL is: {self.open_weather_forcast_url}")
+            print(f"Loaded Open Weather Forcast URL: {self.open_weather_forcast_url}")
 
-        key_file = self._find_full_file_path(Path.cwd().parent, "key.yaml")
-        if not key_file:
-            raise FileExistsError
-        print(f"\nLoading keys file from: {key_file}\n")
-        with open(key_file, "r") as key_yaml_file:
-            content = yaml.safe_load(key_yaml_file)
-            self.open_weather_api_key = content["OPEN_WEATHER_API_KEY"]
-            print(f"OPEN_WEATHER_API_KEY is: {self.open_weather_api_key}")
+        # keys_file = self._find_full_file_path(Path.cwd().parent, "key.yaml")
+        # if not keys_file:
+        #     raise FileExistsError
+        # print(f"\nLoading keys file from: {keys_file}\n")
+        # with open(keys_file, "r") as key_yaml_file:
+        #     content = yaml.safe_load(key_yaml_file)
+        #     self.open_weather_api_key = content["OPEN_WEATHER_API_KEY"]
+        #     print(f"OPEN_WEATHER_API_KEY is: {self.open_weather_api_key}")
+        #     self.open_ai_key = os.getenv("OPEN_AI_API_KEY")
+        #     print(f"OPEN_AI_KEY is: {self.open_weather_api_key}")
 
     def _get_weather_params_by_city(self, city_name):
         params = {

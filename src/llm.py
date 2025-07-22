@@ -25,7 +25,6 @@ class ChatGPT_llm:
         :param user_input: str
         :return: an answer in json format
         """
-
         prompt = """
                     You are a smart weather assistant. Extract information from user input and return JSON like:
                     {
